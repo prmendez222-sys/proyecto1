@@ -66,3 +66,9 @@ class Historial:
                 for e in self.cola:
                     print(e)
                     print("=====================")
+#clase empleado
+class Empleado():
+    def __init__(self,id,nombre,bomba_asignada):
+        self.__id=id
+        self.__nombre=nombre
+        self.__bomba_asignada=bomba_asignada
