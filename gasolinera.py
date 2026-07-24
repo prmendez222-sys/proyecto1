@@ -72,3 +72,30 @@ class Empleado():
         self.__id=id
         self.__nombre=nombre
         self.__bomba_asignada=bomba_asignada
+    @property
+    def id(self):
+        return self.__id
+    @id.setter
+    def id(self,nuevo_id):
+        if isinstance(nuevo_id,int):
+            self.__id=nuevo_id
+        else:
+            raise ValueError("el Id debe se un numero entero")
+    @property
+    def nombre(self):
+        return self.__nombre
+    @nombre.setter
+    def nombre(self,nuevo_nombre):
+        if not nuevo_nombre:
+            raise ValueError("el nombre no puede quedar vacio")
+        else:
+            self.__nombre=nuevo_nombre
+    @property
+    def bomba_asignada(self):
+        return self.__bomba_asignada
+    @bomba_asignada.setter
+    def bomba_asignada(self,nueva_asignacion):
+        if isinstance(nueva_asignacion,int):
+            self.__bomba_asignada=nueva_asignacion
+        else:
+            raise ValueError("el numero de bomba debe ser entero")
