@@ -13,7 +13,8 @@ class Historial:
             print("el historial esta vacio")
             return None
         else:
-            return self.historial[-1]
+            elemento=self.historial[-1]
+            return elemento
     def retirar_del_historial(self):
         if self.vacia():
             print("el historial esta vacio")
@@ -51,7 +52,8 @@ class Cola:
             print("no hay elementos")
             return None
         else:
-            return self.cola.popleft()
+            elemento=self.cola.popleft()
+            return elemento
     def vaciar_cola(self):
         if not self.cola:
             print("no hay elementos")
@@ -66,78 +68,14 @@ class Cola:
             for e in self.cola:
                 print(e)
                 print("=====================")
-#clase empleado
-class Empleado:
-    def __init__(self,id_empleado,nombre):
-        self.__id_empleado=id_empleado
-        self.__nombre=nombre
-    @property
-    def id(self):
-        return self.__id_empleado
-    @id.setter
-    def id(self,nuevo_id):
-        if isinstance(nuevo_id,int):
-            self.__id_empleado=nuevo_id
-        else:
-            raise ValueError("el Id debe se un numero entero")
-    @property
-    def nombre(self):
-        return self.__nombre
-    @nombre.setter
-    def nombre(self,nuevo_nombre):
-        if not nuevo_nombre:
-            raise ValueError("el nombre no puede quedar vacio")
-        else:
-            self.__nombre=nuevo_nombre
-    def mostrar_empleado(self):
-        print("=====================================")
-        print("ID: ",self.id)
-        print("Nombre: ",self.nombre)
-#clase gasolinero
-class Gasolinero(Empleado):
-    def __init__(self, id_gasolinero, nombre, bomba_que_atiende):
-        super().__init__(id_gasolinero, nombre)
-        self.__bomba_que_atiende=bomba_que_atiende
-    @property
-    def bomba_que_atiende(self):
-        return self.__bomba_que_atiende
-    @bomba_que_atiende.setter
-    def bomba_que_atiende(self,nueva_bomba):
-        if isinstance(nueva_bomba,int):
-            self.__bomba_que_atiende=nueva_bomba
-        else:
-            raise ValueError("el numero de bomba debe ser entero")
-    def mostrar_gasolinero(self):
-        super().mostrar_empleado()
-        print("bomba que atiende: ",self.bomba_que_atiende)
-        print("=====================================")
-#clase cajero
-class Cajero(Empleado):
-    def __init__(self,id_cajero,nombre,numero_caja):
-        super().__init__(id_cajero,nombre)
-        self.__numero_de_caja=numero_caja
-    @property
-    def numero_caja(self):
-        return self.__numero_de_caja
-    @numero_caja.setter
-    def numero_caja(self,nueva_caja):
-        if isinstance(nueva_caja,int):
-            self.__numero_de_caja=nueva_caja
-        else:
-            raise ValueError("el numero de caja debe ser entero")
-    def mostrar_cajero(self):
-        super().mostrar_empleado()
-        print("numero de caja: ",self.numero_caja)
-        print("===================================")
 #clase bomba
 class Bomba:
-    def __init__(self,id_bomba,tipo_servicio,tipo_combustible,precio):
-        self.__id_bomba=id_bomba
+    def __init__(self, idbomba, tipo_servicio, tipo_combustible, precio):
+        self.__id_bomba=idbomba
         self.__tipo_servicio=tipo_servicio
         self.__tipo_combustible=tipo_combustible
         self.__capacidad=1000
         self.__precio=precio
-        print("bomba creada con exito")
     @property
     def id(self):
         return self.__id_bomba
@@ -174,13 +112,6 @@ class Bomba:
         return self.__capacidad
     @capacidad.setter
     def capacidad(self,nueva_capacidad):
-        if not isinstance(nueva_capacidad,int):
-            raise ValueError("la capacidad debe ser expresada en numeros enteros")
-        elif nueva_capacidad>1000:
-            raise ValueError("la cantidad no debe ser mayor a 1000 galones")
-        elif nueva_capacidad<0:
-            raise ValueError("la cantidad no puede ser negativa")
-        else:
             self.__capacidad=nueva_capacidad
 
     def llenar_bomba(self,cantidad):
@@ -191,6 +122,7 @@ class Bomba:
         print("Id: ",self.id)
         print("tipo de servicio: ",self.tipo_servicio)
         print("tipo de combustible: ",self.tipo_combustible)
+        print("desponible: ",self.capacidad," galones")
         print("Precio: ",self.precio)
         print("=====================================")
 #clase cliente
@@ -220,12 +152,19 @@ class Cliente:
             self.__cantidad=nueva_cantidad
         else:
             raise ValueError("la cantidad debe ser un numero entero o decimal")
+    def mostrar_cliente(self):
+        print("===================cliente=========================")
+        print("tipo servicio: ",self.tipo_servicio)
+        print("tipo combustible: ",self.tipo_combustible)
+        print("cantidad: ",self.cantidad)
+        print("------------------------------------------------")
 #clase pago
 class Pago(Bomba, Cliente):
-    def __init__(self, id_bomba, tipo_servicio, tipo_combustible, tipo_servicio_cliente, tipo_combustible_cliente, precio, cantidad, pago_recibido):
-        Bomba.__init__(self, id_bomba, tipo_servicio, tipo_combustible, precio)
+    def __init__(self, idbomba, tipo_servicio, tipo_combustible, tipo_servicio_cliente, tipo_combustible_cliente, precio, cantidad, pago_recibido):
+        Bomba.__init__(self, idbomba, tipo_servicio, tipo_combustible, precio)
         Cliente.__init__(self, tipo_servicio_cliente, tipo_combustible_cliente, cantidad)
         self.pago = pago_recibido
+        print("cliente atendido con exito")
 
     @property
     def pago(self):
@@ -257,10 +196,7 @@ class Pago(Bomba, Cliente):
         print("vuelto: ", round(self.calcular_vuelto(), 2))
         print("==============================================")
 
-cola_bomba_1=Cola()
-cola_Bomba_2=Cola()
-Cola_bomba_3=Cola()
-
+cola_bomba=Cola()
 def agregar_cliente():
     print("=======cliente en cola=========")
     while True:
@@ -303,19 +239,76 @@ def agregar_cliente():
     while True:
         try:
             cliente1=Cliente(tipo_servicio,tipo_combustible,cantidad)
-            if tipo_combustible=="regular":
-                cola_bomba_1.agregar(cliente1)
-            elif tipo_combustible=="diesel":
-                cola_Bomba_2.agregar(cliente1)
-            elif tipo_combustible=="super":
-                Cola_bomba_3.agregar(cliente1)
+            cola_bomba.agregar(cliente1)
             break
         except ValueError as e:
             print("error: ",e)
 
+historial_faturacion=Historial()
+historial_clientes=Historial()
+def atender_cliente():
+    while True:
+        if cola_bomba.cantidad_en_cola()==0 or len(bombas) == 0:
+            print("no hay bombas o no hay cola de clientes")
+            break
+        else:
+            elemento = cola_bomba.mostrar_primer_elemento()
+            if elemento.tipo_combustible == "regular":
+                for b in bombas:
+                    if b.id == 1:
+                        bomba = b
+            elif elemento.tipo_combustible == "diesel":
+                for b in bombas:
+                    if b.id == 2:
+                        bomba = b
+            elif elemento.tipo_combustible == "super":
+                for b in bombas:
+                    if b.id == 3:
+                        bomba = b
+            tipo_servicio_cliente = elemento.tipo_servicio
+            tipo_cliente = elemento.tipo_combustible
+            cantidad = elemento.cantidad
+            idbomba = bomba.id
+            tipo_servicio_bomba = bomba.tipo_servicio
+            tipo_combustible = bomba.tipo_combustible
+            precio = bomba.precio
+            capacidad=bomba.capacidad
+
+            print("----------CAJA--------------")
+            print("tipo de combustible: ", tipo_combustible)
+            print("tipo de servicio: ", tipo_servicio_bomba)
+            print("cantidad: ", cantidad)
+            print("precio por galon: ", precio)
+            print("=======================================")
+            while True:
+                try:
+                    pago = float(input("ingrese el pago: "))
+                    break
+                except ValueError:
+                    ValueError("el precio debe ser entero o decimal")
+
+            try:
+                pago = Pago(idbomba, tipo_servicio_bomba, tipo_combustible, tipo_servicio_cliente, tipo_cliente,precio,cantidad, pago)
+                if capacidad==0 or capacidad<pago.calcular_total():
+                    print("no hay combustible disponible en la bomba: ", idbomba)
+                    break
+                else:
+                    for b in bombas:
+                        if b.id==idbomba:
+                            b.capacidad=capacidad-pago.calcular_total()
+                historial_faturacion.agregar_historial(pago)
+                historial_clientes.agregar_historial(elemento)
+                cola_bomba.eliminar_primer_elemento()
+                factura = historial_faturacion.mirar_ultimo_elemento()
+                print("============Factura==================")
+                factura.mostrar_factura()
+                print("-------------------------")
+                break
+            except ValueError as e:
+                print("error: ", e)
 
 bombas=[]
-id_bomba=0
+id_bomba=1
 def crear_bomba():
     while True:
         print("==================")
@@ -359,31 +352,130 @@ def crear_bomba():
         try:
             bomba1=Bomba(id_bomba,tipo_servicio,tipo_combustible,precio)
             bombas.append(bomba1)
+            print("bomba creada con exito")
             break
         except ValueError as e:
             print("error: ",e)
 
+historial_llenado=Historial()
+def llenar_bomba():
+    while True:
+        try:
+            idbomba=int(input("ingrese el Id de bomba: "))
+            break
+        except ValueError:
+            ValueError("el id debe ser un numero entero")
+    if len(bombas)==0:
+        print("no hay bombas registradas")
+    else:
+        for lb in bombas:
+            if lb.id == idbomba:
+                bomba = lb
+                existe = True
+                lb.mostrar_bomba()
+            else:existe=False
+
+        if existe:
+            cantidad_anterior = bomba.capacidad
+            while True:
+                try:
+                    nueva_cantidad = float(input("ingrese la nueva cantidad: "))
+                    for b in bombas:
+                        if b.id == idbomba:
+                            b.llenar_bomba(nueva_cantidad)
+                    historial_llenado.agregar_historial(bomba)
+                    print("___________bomba llenada con exito------------")
+                    print("cantidad anterior: ", cantidad_anterior)
+                    print("cantidad actual: ", nueva_cantidad)
+                    break
+                except ValueError as e:
+                    print("error: ", e)
+        else:
+            print("bomba no econtrada")
+
 while True:
     print("1. ingreso de cliente")
     print("2. atender cliente")
-    print("3. ver al al ultimo cliente atendido")
-    print("4. ver ultima factura hecha")
-    print("5. llenar bomba")
-    print("6. ver ultima bomba llenada")
-    print("7. ver historial de llenado")
-    print("8. ver historial de facturacion")
-    print("9. ingresar empleado")
-    print("10. crear una nueva bomba")
-    print("11. salir")
+    print("3. mostrar cola de clientes")
+    print("4. ver todas las bombas")
+    print("5. ver al al ultimo cliente atendido")
+    print("6. ver ultima factura hecha")
+    print("7. llenar bomba")
+    print("8. ver ultima bomba llenada")
+    print("9. ver historial de llenado")
+    print("10. ver historial de facturacion")
+    print("11. ver historial de clientes")
+    print("12. borrar todos los historiales")
+    print("13. crear una nueva bomba")
+    print("14. salir")
     opcion=input("\n ingrese una opcion: ")
     match opcion:
         case "1":
             agregar_cliente()
         case "2":
-            for b in bombas:
-                b.mostrar_bomba()
+            atender_cliente()
+        case "3":
+            if cola_bomba.cantidad_en_cola()==0:
+                print("no hay clientes en cola")
+            else:
+                for c in cola_bomba.cola:
+                    c.mostrar_cliente()
+        case "4":
+            if len(bombas)==0:
+                print("no hay bombas creadas")
+            else:
+                for b in bombas:
+                    b.mostrar_bomba()
+        case "5":
+            if historial_clientes.vacia():
+                print("historial vacio")
+            else:
+                elemento = historial_clientes.mirar_ultimo_elemento()
+                print(elemento.mostrar_cliente())
+        case "6":
+            if historial_faturacion.vacia():
+                print("no hay facturas realizadas")
+            else:
+                elemento=historial_faturacion.mirar_ultimo_elemento()
+                print(elemento.mostrar_factura())
+        case "7":
+            llenar_bomba()
+        case "8":
+            if historial_llenado.vacia():
+                print("no hay historial de llenado")
+            else:
+                elemento=historial_llenado.mirar_ultimo_elemento()
+                print("---------ultima bomba llenada----------")
+                print(elemento.mostrar_bomba())
+        case "9":
+            if historial_llenado.vacia():
+                print("historial vacio")
+            else:
+                for l in historial_llenado.historial:
+                    print("==========historial de llenado==========")
+                    print(l.mostrar_bomba())
         case "10":
+            if historial_faturacion.vacia():
+                print("historial vacio")
+            else:
+                for f in historial_faturacion.historial:
+                    print("==========historial de llenado==========")
+                    print(f.mostrar_factura())
+        case "11":
+            if historial_clientes.vacia():
+                print("historial vacio")
+            else:
+                for c in historial_clientes.historial:
+                    print("==========historial de llenado==========")
+                    print(c.mostrar_cliente())
+        case "12":
+            historial_faturacion.vaciar_hitorial()
+            historial_clientes.vaciar_hitorial()
+            historial_llenado.vaciar_hitorial()
+            print("historiales eliminados con exito")
+
+        case "13":
             crear_bomba()
             id_bomba=id_bomba+1
-        case "11":
+        case "14":
             break
