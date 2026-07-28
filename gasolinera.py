@@ -96,7 +96,6 @@ class Cajero:
     def mostrar_cajero(self):
         print("ID: ",self.id_empleado)
         print("Nombre: ",self.nombre)
-        print("-============================")
 
 #clase bomba
 class Bomba:
@@ -256,7 +255,7 @@ def agregar_cliente():
                 tipo_combustible = "diesel"
                 break
             case "3":
-                tipo_combustible = "Super"
+                tipo_combustible = "super"
                 break
             case _:
                 print("opcion no valida")
@@ -352,10 +351,10 @@ def atender_cliente():
             else:
                 print("cajero no encontrado")
 
-
-bombas=[]
 id_bomba=1
+bombas=[]
 def crear_bomba():
+    global id_bomba
     while True:
         print("==================")
         print("----------ingrese el tipo de servicio-------")
@@ -399,6 +398,7 @@ def crear_bomba():
             bomba1=Bomba(id_bomba,tipo_servicio,tipo_combustible,precio)
             bombas.append(bomba1)
             print("bomba creada con exito")
+            id_bomba+=1
             break
         except ValueError as e:
             print("error: ",e)
@@ -441,11 +441,13 @@ def llenar_bomba():
 id_empleado=1
 cajeros={}
 def crear_empleado():
+    global id_empleado
     while True:
         try:
             nombre=input("ingrese nombre: ")
             cajero=Cajero(id_empleado,nombre)
             cajeros[id_empleado]=cajero
+            id_empleado+=1
             break
         except ValueError as e:
             print(e)
@@ -463,15 +465,12 @@ def sub_menu1():
         match sub1:
             case "1":
                 crear_empleado()
-                break
             case "2":
                 for e in cajeros.values():
                     e.mostrar_cajero()
                     print("========================")
-                break
             case "3":
                 crear_bomba()
-                break
             case "4":
                 if len(bombas)==0:
                     print("no hay bombas creadas")
@@ -481,7 +480,6 @@ def sub_menu1():
                 break
             case "5":
                 llenar_bomba()
-                break
             case "6":
                 break
             case _:
