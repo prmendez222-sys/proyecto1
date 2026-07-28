@@ -68,6 +68,35 @@ class Cola:
             for e in self.cola:
                 print(e)
                 print("=====================")
+
+#clase cajero
+class Cajero:
+    def __init__(self, id_empleado,nombre):
+        self.__id_empleado=id_empleado
+        self.__nombre=nombre
+    @property
+    def id_empleado(self):
+        return self.__id_empleado
+    @id_empleado.setter
+    def id_empleado(self, nuevo_id):
+        if isinstance(nuevo_id,int):
+            self.__id_empleado=nuevo_id
+        else:
+            raise ValueError("el Id debe ser un numero")
+    @property
+    def nombre(self):
+        return self.__nombre
+    @nombre.setter
+    def nombre(self, nuevo_nombre):
+        if not nuevo_nombre:
+            raise ValueError("el nombre no puede quedar vacio")
+        else:
+            self.__nombre=nuevo_nombre
+    def mostrar_cajero(self):
+        print("ID: ",self.id_empleado)
+        print("Nombre: ",self.nombre)
+        print("-============================")
+
 #clase bomba
 class Bomba:
     def __init__(self, idbomba, tipo_servicio, tipo_combustible, precio):
@@ -392,6 +421,20 @@ def llenar_bomba():
                     print("error: ", e)
         else:
             print("bomba no econtrada")
+id_empleado=1
+def crear_empleado():
+    while True:
+        try:
+            nombre=input("ingrese nombre: ")
+            break
+        except ValueError as e:
+            print(e)
+    while True:
+        try:
+            cajero=Cajero(id_empleado,nombre)
+            break
+        except ValueError as e:
+            print(e)
 
 while True:
     print("1. ingreso de cliente")
@@ -407,7 +450,8 @@ while True:
     print("11. ver historial de clientes")
     print("12. borrar todos los historiales")
     print("13. crear una nueva bomba")
-    print("14. salir")
+    print("14. crear empleado")
+    print("15. salir")
     opcion=input("\n ingrese una opcion: ")
     match opcion:
         case "1":
@@ -473,9 +517,10 @@ while True:
             historial_clientes.vaciar_hitorial()
             historial_llenado.vaciar_hitorial()
             print("historiales eliminados con exito")
-
         case "13":
             crear_bomba()
             id_bomba=id_bomba+1
         case "14":
+            crear_empleado()
+        case "15":
             break
