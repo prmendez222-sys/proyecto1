@@ -402,9 +402,12 @@ def crear_bomba():
             break
         except ValueError as e:
             print("error: ",e)
-
+existe=False
+bomba=""
 historial_llenado=Historial()
 def llenar_bomba():
+    global existe
+    global bomba
     while True:
         try:
             idbomba=int(input("ingrese el Id de bomba: "))
@@ -419,7 +422,6 @@ def llenar_bomba():
                 bomba = lb
                 existe = True
                 lb.mostrar_bomba()
-            else:existe=False
 
         if existe:
             cantidad_anterior = bomba.capacidad
